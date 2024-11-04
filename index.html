@@ -11,5 +11,16 @@
       <input type="text" required />
       <button type="submit">Search</button>
     </form>
+    <script>
+      const form = document.querySelector("form");
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const title = document.querySelector("input");
+        const titleVal = title.value;
+        localStorage.setItem("title", JSON.stringify(titleVal));
+        form.reset();
+        window.open("display.html");
+      });
+    </script>
   </body>
 </html>
