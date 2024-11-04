@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Books</title>
+  </head>
+  <body>
+    <div>
+      <h2>Book Details</h2>
+      <div id="details"></div>
+    </div>
+    <script>
+      const titleVal = localStorage.getItem("title");
+      console.log(titleVal);
+      const div = document.getElementById("details");
+      const url = `https://openlibrary.org/search.json?title=${titleVal}`;
+      const headers = new Headers({
+        "User-Agent": "BookFinder/1.0 (waliddraa2@gmail.com)",
+      });
+      const options = {
+        method: "GET",
+        headers: headers,
+      };
+      fetch(url, options)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data); // Logs the entire response object, including docs array
+
+          // Ensure 'docs' exists and is an array before mapping
+          if (Array.isArray(data.docs)) {
+            data.docs.forEach((detail) => {
+              div.innerHTML += `<p class='title'>${detail.title}</p>`;
+              div.innerHTML += `<p class='author'>${
+                detail.author_name
+                  ? detail.author_name.join(", ")
+                  : "Unknown Author"
+              }</p>`;
+              div.innerHTML += `<div class='divider'></div>`;
+            });
+          } else {
+            div.innerHTML = "<p>No books found.</p>";
+          }
+        })
+        .catch((error) => console.error("Error:", error));
+    </script>
+  </body>
+</html>
